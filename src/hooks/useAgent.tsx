@@ -5,9 +5,10 @@ import React from "react";
 const state_attribute = 'lk.agent.state';
 
 export function useAgent(): VoiceAssistant {
-  const agent = useRemoteParticipants().find((p) => p.kind === ParticipantKind.AGENT);
-  const audioTrack = useParticipantTracks([Track.Source.Microphone], agent?.identity)[0];
-  const { segments: agentTranscriptions } = useTrackTranscription(audioTrack);
+  const agent = useRemoteParticipants().find((p) => p.isAgent);
+  const audioTrack = useParticipantTracks([Track.Source.Microphone], agent?.identity)[1];
+  const transcriptionsTrack = useParticipantTracks([Track.Source.Microphone], agent?.identity)[0];
+  const { segments: agentTranscriptions } = useTrackTranscription(transcriptionsTrack);
   const connectionState = useConnectionState();
   const { attributes } = useParticipantAttributes({ participant: agent });
 

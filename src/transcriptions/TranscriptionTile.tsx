@@ -13,14 +13,20 @@ import {
 } from "livekit-client";
 import { useEffect, useState } from "react";
 
+import {
+  type ReceivedTranscriptionSegment,
+} from '@livekit/components-core';
+
 export function TranscriptionTile({
   agentAudioTrack,
+  agentTranscriptions,
   accentColor,
 }: {
   agentAudioTrack: TrackReferenceOrPlaceholder;
+  agentTranscriptions: ReceivedTranscriptionSegment[];
   accentColor: string;
 }) {
-  const agentMessages = useTrackTranscription(agentAudioTrack);
+  // const agentMessages = useTrackTranscription(agentAudioTrack);
   const localParticipant = useLocalParticipant();
   const localMessages = useTrackTranscription({
     publication: localParticipant.microphoneTrack,
@@ -36,7 +42,7 @@ export function TranscriptionTile({
 
   // store transcripts
   useEffect(() => {
-    agentMessages.segments.forEach((s) =>
+    agentTranscriptions.forEach((s) =>
       transcripts.set(
         s.id,
         segmentToChatMessage(
@@ -87,7 +93,7 @@ export function TranscriptionTile({
     chatMessages,
     localParticipant.localParticipant,
     agentAudioTrack.participant,
-    agentMessages.segments,
+    agentTranscriptions,
     localMessages.segments,
   ]);
 

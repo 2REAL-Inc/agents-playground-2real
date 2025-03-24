@@ -31,6 +31,7 @@ import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { Axel } from "./Axel";
 import tailwindTheme from "../../lib/tailwindTheme.preval";
 import { EditableNameValueRow } from "@/components/config/NameValueRow";
+import { useAgent } from "@/hooks/useAgent";
 
 export interface PlaygroundMeta {
   name: string;
@@ -55,11 +56,20 @@ export default function Playground({
   const [transcripts, setTranscripts] = useState<ChatMessageType[]>([]);
   const { localParticipant } = useLocalParticipant();
 
-  const voiceAssistant = useVoiceAssistant();
+  const voiceAssistant = useAgent();
 
   const roomState = useConnectionState();
   const tracks = useTracks();
   const room = useRoomContext();
+
+  const subTracks = useTracks(
+    [Track.Source.Microphone, Track.Source.ScreenShareAudio, Track.Source.Unknown],
+    {
+      updateOnlyOn: [],
+      onlySubscribed: true,
+    },
+  ).filter((ref) => !ref.participant.isLocal && ref.publication.kind === Track.Kind.Audio);
+  console.log('sub tracks', subTracks);
 
   const [rpcMethod, setRpcMethod] = useState("");
   const [rpcPayload, setRpcPayload] = useState("");
@@ -175,12 +185,13 @@ export default function Playground({
       return (
         <TranscriptionTile
           agentAudioTrack={voiceAssistant.audioTrack}
+          agentTranscriptions={voiceAssistant.agentTranscriptions}
           accentColor={config.settings.theme_color}
         />
       );
     }
     return <></>;
-  }, [config.settings.theme_color, voiceAssistant.audioTrack]);
+  }, [config.settings.theme_color, voiceAssistant.audioTrack, voiceAssistant.agentTranscriptions]);
 
   const handleRpcCall = useCallback(async () => {
     if (!voiceAssistant.agent || !room) return;

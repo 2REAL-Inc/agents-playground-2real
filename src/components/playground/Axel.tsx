@@ -1,3 +1,4 @@
+import { useAgent } from "@/hooks/useAgent";
 import { useVoiceAssistant } from "@livekit/components-react";
 import { useRef, useEffect, useState } from "react";
 
@@ -5,7 +6,7 @@ const SMOOTHING_FACTOR = 1;
 const THRESHOLD = 175;
 const JAW_MAX_OPEN = 45;
 export const Axel = () => {
-  const voiceAssistant = useVoiceAssistant();
+  const voiceAssistant = useAgent();
   const audioContainerRef = useRef<HTMLDivElement | null>(null);
   const headRef = useRef<HTMLVideoElement>(null);
   const jawRef = useRef<HTMLVideoElement>(null);
@@ -35,6 +36,8 @@ export const Axel = () => {
       updateJawPosition(50);
       setIsActive(true);
 
+
+
       // Create a new audio element
       const audioElement = document.createElement('audio');
 
@@ -53,6 +56,7 @@ export const Axel = () => {
       const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       const analyser = audioContext.createAnalyser();
       analyser.fftSize = 64;
+      console.log('start axel', analyser);
 
       const mediaStream = audioElement.srcObject as MediaStream;
       // Create a MediaStreamAudioSourceNode

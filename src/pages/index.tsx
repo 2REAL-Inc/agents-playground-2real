@@ -44,8 +44,8 @@ export default function Home() {
 export function HomeInner() {
   const { shouldConnect, wsUrl, token, mode, connect, disconnect } =
     useConnection();
-  
-  const {config} = useConfig();
+
+  const { config } = useConfig();
   const { toastMessage, setToastMessage } = useToast();
 
   const handleConnect = useCallback(
@@ -59,7 +59,7 @@ export function HomeInner() {
     if (process.env.NEXT_PUBLIC_LIVEKIT_URL) {
       return true;
     }
-    if(wsUrl) {
+    if (wsUrl) {
       return true;
     }
     return false;
@@ -115,7 +115,7 @@ export function HomeInner() {
                 handleConnect(c, m);
               }}
             />
-            <RoomAudioRenderer />
+            {/* <RoomAudioRenderer /> */}
             <StartAudio label="Click to enable audio playback" />
           </LiveKitRoom>
         ) : (
