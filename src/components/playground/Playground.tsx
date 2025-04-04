@@ -137,7 +137,7 @@ export default function Playground({
     );
   }, [config.settings.theme_color]);
 
-  const rand0TileContent = useMemo(() => {
+  const audioTileContent = useMemo(() => {
     const disconnectedContent = (
       <div className="flex flex-col items-center justify-center gap-2 text-gray-700 text-center w-full">
         No audio track. Connect to get started.
@@ -391,13 +391,13 @@ export default function Playground({
 
   if (config.settings.outputs.audio) {
     mobileTabs.push({
-      title: "Rand0",
+      title: "Audio",
       content: (
         <PlaygroundTile
           className="w-full h-full grow"
           childrenClassName="justify-center"
         >
-          {rand0TileContent}
+          {audioTileContent}
         </PlaygroundTile>
       ),
     });
@@ -465,11 +465,11 @@ export default function Playground({
           )}
           {config.settings.outputs.audio && (
             <PlaygroundTile
-              title="Rand0"
+              title="Audio"
               className="w-full h-full grow"
               childrenClassName="justify-center"
             >
-              {rand0TileContent}
+              {audioTileContent}
             </PlaygroundTile>
           )}
         </div>
